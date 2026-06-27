@@ -10,6 +10,7 @@ interface Profile {
   transaction_id: string;
   phone: string;
   class_grade: string;
+  sector_interest: string;
   status: string;
   created_at: string;
 }
@@ -87,8 +88,20 @@ export default function Admin() {
   const filteredProfiles = profiles.filter(profile => 
     profile.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     profile.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    profile.transaction_id?.toLowerCase().includes(searchTerm.toLowerCase())
+    profile.transaction_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    profile.sector_interest?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const getSectorLabel = (sector: string) => {
+    const sectors: Record<string, string> = {
+      'web_dev': 'Web Development',
+      'ai_academic': 'AI Academic Studio',
+      'image_video_gen': 'Image & Video Gen',
+      'ai_agents': 'Building AI Agents',
+      'ai_music_voice': 'AI Music & Voice'
+    };
+    return sectors[sector] || sector;
+  };
 
   if (!isAdminLoggedIn) {
     return (
@@ -205,93 +218,117 @@ export default function Admin() {
           <p className="text-on-surface-variant text-lg">No registration requests found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProfiles.map((profile) => (
-              <motion.div
-                key={profile.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="glass-card p-6 rounded-2xl flex flex-col gap-6 relative group overflow-hidden"
-              >
-                {/* Status Badge */}
-                <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase ${
-                    profile.status === 'approved' ? 'bg-secondary/20 text-secondary' :
-                    profile.status === 'declined' ? 'bg-error/20 text-error' :
-                    'bg-primary/20 text-primary'
-                  }`}>
-                    {profile.status || 'pending'}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                      <User size={24} />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-lg text-white leading-tight">{profile.full_name}</span>
-                      <span className="text-xs text-on-surface-variant flex items-center gap-1 mt-1">
-                        <Mail size={12} /> {profile.email}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 py-4 border-y border-white/5">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Class</span>
-                      <span className="text-sm font-medium flex items-center gap-1.5">
-                        <GraduationCap size={14} className="text-tertiary" /> {profile.class_grade}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Phone</span>
-                      <span className="text-sm font-medium flex items-center gap-1.5">
-                        <Phone size={14} className="text-secondary" /> {profile.phone}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 p-3 bg-black/20 rounded-xl border border-white/5">
-                    <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Transaction ID</span>
-                    <span className="text-sm font-mono text-primary break-all flex items-center gap-2">
-                      <Hash size={14} /> {profile.transaction_id || 'N/A'}
-                    </span>
-                  </div>
-                </div>
-
-                {profile.status === 'pending' && (
-                  <div className="flex gap-3 mt-2">
-                    <button 
-                      onClick={() => updateStatus(profile.id, 'approved')}
-                      className="flex-1 bg-secondary/10 hover:bg-secondary/20 text-secondary py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 border border-secondary/20"
-                    >
-                      <CheckCircle2 size={18} /> Approve
-                    </button>
-                    <button 
-                      onClick={() => updateStatus(profile.id, 'declined')}
-                      className="flex-1 bg-error/10 hover:bg-error/20 text-error py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 border border-error/20"
-                    >
-                      <XCircle size={18} /> Decline
-                    </button>
-                  </div>
-                )}
-                
-                {profile.status !== 'pending' && (
-                  <button 
-                    onClick={() => updateStatus(profile.id, 'pending')}
-                    className="mt-2 w-full bg-white/5 hover:bg-white/10 text-on-surface-variant py-2 rounded-lg text-xs font-medium transition-all"
+      <div className="glass-card rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-white/5 border-b border-white/10">
+                <th className="px-6 py-4 text-[10px] font-mono text-outline uppercase tracking-widest">Student Info</th>
+                <th className="px-6 py-4 text-[10px] font-mono text-outline uppercase tracking-widest">Class</th>
+                <th className="px-6 py-4 text-[10px] font-mono text-outline uppercase tracking-widest">Sector Interest</th>
+                <th className="px-6 py-4 text-[10px] font-mono text-outline uppercase tracking-widest">Transaction ID</th>
+                <th className="px-6 py-4 text-[10px] font-mono text-outline uppercase tracking-widest text-center">Status</th>
+                <th className="px-6 py-4 text-[10px] font-mono text-outline uppercase tracking-widest text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              <AnimatePresence mode="popLayout">
+                {filteredProfiles.map((profile) => (
+                  <motion.tr 
+                    key={profile.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="hover:bg-white/[0.02] transition-colors group"
                   >
-                    Reset to Pending
-                  </button>
-                )}
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                          <User size={18} />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-white text-sm leading-tight">{profile.full_name}</span>
+                          <span className="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                            <Mail size={10} className="opacity-50" /> {profile.email}
+                          </span>
+                          <span className="text-[11px] text-on-surface-variant flex items-center gap-1">
+                            <Phone size={10} className="opacity-50" /> {profile.phone}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-medium text-white flex items-center gap-1.5 w-fit">
+                        <GraduationCap size={12} className="text-tertiary" /> {profile.class_grade}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(77,142,255,0.8)]"></div>
+                        <span className="text-xs font-medium text-on-surface-variant">
+                          {getSectorLabel(profile.sector_interest)}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-[11px] font-mono text-primary/80 group-hover:text-primary transition-colors cursor-help bg-primary/5 px-2 py-1 rounded-md border border-primary/10" title={profile.transaction_id}>
+                        {profile.transaction_id ? `${profile.transaction_id.substring(0, 8)}...` : 'N/A'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex justify-center">
+                        {profile.status === 'approved' ? (
+                          <span className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-secondary bg-secondary/10 px-2.5 py-1 rounded-full border border-secondary/20">
+                            <CheckCircle2 size={10} /> Approved
+                          </span>
+                        ) : profile.status === 'declined' ? (
+                          <span className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-error bg-error/10 px-2.5 py-1 rounded-full border border-error/20">
+                            <XCircle size={10} /> Declined
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
+                            <AlertCircle size={10} /> Pending
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        {profile.status === 'pending' ? (
+                          <>
+                            <button 
+                              onClick={() => updateStatus(profile.id, 'approved')}
+                              className="p-2 rounded-lg bg-secondary/10 text-secondary hover:bg-secondary hover:text-on-secondary transition-all"
+                              title="Approve"
+                            >
+                              <CheckCircle2 size={16} />
+                            </button>
+                            <button 
+                              onClick={() => updateStatus(profile.id, 'declined')}
+                              className="p-2 rounded-lg bg-error/10 text-error hover:bg-error hover:text-on-error transition-all"
+                              title="Decline"
+                            >
+                              <XCircle size={16} />
+                            </button>
+                          </>
+                        ) : (
+                          <button 
+                            onClick={() => updateStatus(profile.id, 'pending')}
+                            className="p-2 rounded-lg bg-white/5 text-on-surface-variant hover:bg-white/10 transition-all"
+                            title="Reset to Pending"
+                          >
+                            <RefreshCcw size={16} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
         </div>
+      </div>
       )}
     </div>
   );

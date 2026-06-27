@@ -56,6 +56,27 @@ export default function Register() {
           if (cleanPhone.length !== 10 || !/^\d+$/.test(cleanPhone)) {
             throw new Error('Please enter a valid mobile number (exactly 10 digits)');
           }
+
+          // Check if user already exists with this email or phone
+          const { data: existingUser, error: checkError } = await supabase
+            .from('profiles')
+            .select('email, phone')
+            .or(`email.eq.${email},phone.eq.${phone}`)
+            .maybeSingle();
+
+          if (checkError) {
+            console.error('Check error:', checkError);
+          }
+
+          if (existingUser) {
+            if (existingUser.email === email) {
+              throw new Error('This email is already registered. Please login or use a different email.');
+            }
+            if (existingUser.phone === phone) {
+              throw new Error('This phone number is already registered. Please enter your own details.');
+            }
+          }
+
           setStep(2);
           setLoading(false);
           return;
@@ -63,6 +84,21 @@ export default function Register() {
 
         if (!transactionId.trim()) {
           throw new Error('Please enter a valid Transaction ID');
+        }
+
+        // Check if transaction ID already exists
+        const { data: existingTx, error: txCheckError } = await supabase
+          .from('profiles')
+          .select('transaction_id')
+          .eq('transaction_id', transactionId)
+          .maybeSingle();
+
+        if (txCheckError) {
+          console.error('TX check error:', txCheckError);
+        }
+
+        if (existingTx) {
+          throw new Error('This Transaction ID has already been used. Please enter your own transaction details.');
         }
 
         const { data, error: signUpError } = await supabase.auth.signUp({
@@ -73,20 +109,26 @@ export default function Register() {
         if (signUpError) throw signUpError;
 
         if (data.user) {
-          // Attempt to create profile, ignore if table doesn't exist yet
-          try {
-            await supabase.from('profiles').insert({
-              id: data.user.id,
-              full_name: fullName,
-              class_grade: classGrade,
-              phone: phone,
-              sector_interest: interest,
-              transaction_id: transactionId,
-              status: 'pending',
-              email: email
-            });
-          } catch (profileError) {
-            console.warn(profileError);
+          const { error: profileError } = await supabase.from('profiles').insert({
+            id: data.user.id,
+            full_name: fullName,
+            class_grade: classGrade,
+            phone: phone,
+            sector_interest: interest,
+            transaction_id: transactionId,
+            status: 'pending',
+            email: email
+          });
+
+          if (profileError) {
+            console.error('Profile creation error:', profileError);
+            // Don't throw here if we want the user to at least have an auth account, 
+            // but the request is "make sure it's saved", so we should probably alert or handle it.
+            setError('Account created but profile details could not be saved. Please contact support.');
+            // We might still want to proceed to step 3 if the user is signed up, 
+            // but the data won't be in profiles. 
+            // Let's throw for now to be safe and "make sure it's saved".
+            throw new Error(`Profile creation failed: ${profileError.message}`);
           }
         }
         
@@ -100,7 +142,7 @@ export default function Register() {
   };
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col relative min-h-[800px] overflow-x-hidden">
+    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col relative min-h-[800px]">
       
       <div className="relative w-full max-w-4xl mx-auto flex-grow flex">
         <AnimatePresence mode="wait">

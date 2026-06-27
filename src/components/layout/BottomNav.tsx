@@ -95,7 +95,7 @@ export default function BottomNav() {
                 />
               )}
               <User size={20} />
-              {isActive('/register') && !location.search.includes('mode=login') && <span className="text-xs font-bold uppercase tracking-tight">Join</span>}
+              {isActive('/register') && !location.search.includes('mode=login') && <span className="text-xs font-bold uppercase tracking-tight">Register</span>}
             </Link>
           )}
         </nav>

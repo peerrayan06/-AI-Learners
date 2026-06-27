@@ -100,7 +100,7 @@ export default function Dashboard() {
   const displayName = profile.full_name || user?.email?.split('@')[0] || 'Student';
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow overflow-x-hidden">
+    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow">
       <header className="mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
           Welcome back, <span className="text-primary">{displayName}</span>
@@ -139,7 +139,31 @@ export default function Dashboard() {
             <h3 className="text-2xl font-bold">{displayName}</h3>
             <p className="text-on-surface-variant text-base">{user?.email}</p>
             
-            <div className="mt-6 flex items-center gap-2 text-on-surface-variant text-xs font-mono uppercase tracking-wider">
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Class</span>
+                <span className="text-sm font-medium">{profile.class_grade || 'Not set'}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Phone</span>
+                <span className="text-sm font-medium">{profile.phone || 'Not set'}</span>
+              </div>
+              <div className="flex flex-col gap-1 col-span-2">
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Sector Interest</span>
+                <span className="text-sm font-medium text-primary">
+                  {profile.sector_interest ? (
+                    profile.sector_interest === 'web_dev' ? 'Web Development' :
+                    profile.sector_interest === 'ai_academic' ? 'AI Academic Studio' :
+                    profile.sector_interest === 'image_video_gen' ? 'Image & Video Gen' :
+                    profile.sector_interest === 'ai_agents' ? 'Building AI Agents' :
+                    profile.sector_interest === 'ai_music_voice' ? 'AI Music & Voice' :
+                    profile.sector_interest
+                  ) : 'Not selected'}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex items-center gap-2 text-on-surface-variant text-[10px] font-mono uppercase tracking-wider">
               <Calendar size={16} />
               Member since {new Date(user?.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             </div>
@@ -156,9 +180,35 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Quick Actions Card */}
-        <div className="md:col-span-6 glass-card p-8 rounded-2xl flex flex-col gap-4">
-          <h3 className="text-xl font-bold mb-2">Quick Actions</h3>
+          <div className="md:col-span-6 glass-card p-8 rounded-2xl flex flex-col gap-4">
+            <h3 className="text-xl font-bold mb-2">Payment Verification</h3>
+            
+            <div className="p-4 rounded-xl bg-black/20 border border-white/5 flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Transaction ID</span>
+                <span className="text-sm font-mono text-primary break-all">{profile.transaction_id || 'Not found'}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Verification Status</span>
+                <div className="flex items-center gap-2 mt-1">
+                  {profile.status === 'approved' ? (
+                    <span className="text-secondary text-xs font-bold flex items-center gap-1">
+                      <CheckCircle2 size={14} /> Payment Verified
+                    </span>
+                  ) : profile.status === 'declined' ? (
+                    <span className="text-error text-xs font-bold flex items-center gap-1">
+                      <XCircle size={14} /> Verification Failed
+                    </span>
+                  ) : (
+                    <span className="text-primary text-xs font-bold flex items-center gap-1">
+                      <Clock size={14} /> Pending Review
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <h3 className="text-xl font-bold mb-2 mt-4">Quick Actions</h3>
           
           <a href="#profile" className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/10 transition-all duration-200 group">
             <div className="p-2 bg-on-surface-variant/10 rounded-lg group-hover:bg-primary/20 transition-colors">

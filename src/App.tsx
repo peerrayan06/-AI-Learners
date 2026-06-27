@@ -12,7 +12,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-[100dvh] flex flex-col overflow-x-hidden">
+        <div className="min-h-[100dvh] flex flex-col">
           <Navbar />
           <main className="flex-grow flex flex-col">
             <Routes>
