@@ -5,6 +5,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
+import { SuccessModal } from '../components/ui/SuccessModal';
+
 export default function Register() {
   const [searchParams] = useSearchParams();
   const [isLogin, setIsLogin] = useState(searchParams.get('mode') === 'login');
@@ -393,79 +395,18 @@ export default function Register() {
               </div>
             </motion.section>
           )}
-
-          {step === 3 && (
-            <motion.section
-              key="step3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4"
-            >
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                  delay: 0.1 
-                }}
-                className="glass-card p-10 md:p-14 rounded-3xl flex flex-col items-center gap-6 max-w-lg w-full text-center border-primary/40 shadow-[0_0_80px_rgba(77,142,255,0.25)] relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none"></div>
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-secondary via-primary to-tertiary"></div>
-                
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 200, delay: 0.3 }}
-                  className="relative w-28 h-28 rounded-full bg-primary/10 flex items-center justify-center mb-2"
-                >
-                  <motion.div 
-                    animate={{ rotate: [0, 15, -15, 0] }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                    className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center shadow-[0_0_30px_rgba(77,142,255,0.4)]"
-                  >
-                    <CheckCircle2 className="text-primary drop-shadow-[0_0_10px_rgba(77,142,255,0.8)]" size={48} />
-                  </motion.div>
-                </motion.div>
-                
-                <div className="flex flex-col gap-4 relative z-10">
-                  <motion.h2 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="text-4xl md:text-5xl font-extrabold text-white tracking-tight"
-                  >
-                    You're In! <span className="text-2xl block mt-2 text-primary">🎉</span>
-                  </motion.h2>
-                  <motion.p 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                    className="text-on-surface-variant text-lg leading-relaxed px-4"
-                  >
-                    Your registration has been completed. The admin will verify your transaction soon. 
-                    <span className="block mt-4 font-mono text-primary/80 text-sm tracking-wider uppercase font-bold bg-primary/10 py-2 px-4 rounded-lg inline-block border border-primary/20">Usually takes 12-13 hours</span>
-                  </motion.p>
-                </div>
-                
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                  className="w-full mt-6 relative z-10"
-                >
-                  <button onClick={() => navigate('/dashboard')} className="gradient-btn-primary w-full py-4 rounded-xl text-lg font-bold text-on-primary-container shadow-[0_0_30px_rgba(77,142,255,0.4)] hover:shadow-[0_0_40px_rgba(77,142,255,0.6)] hover:scale-[1.03] active:scale-[0.97] transition-all flex justify-center items-center gap-2">
-                    Take me to Dashboard
-                    <ArrowRight size={20} />
-                  </button>
-                </motion.div>
-              </motion.div>
-            </motion.section>
-          )}
         </AnimatePresence>
+
+        <SuccessModal 
+          isOpen={step === 3}
+          onClose={() => navigate('/dashboard')}
+          title="Registration Success! 🎉"
+          message="Your application has been received. Our team will verify your transaction (usually takes 12-24 hours). Welcome to the next generation of AI architects!"
+          transactionId={transactionId}
+          status="pending"
+          actionText="Go to Dashboard"
+          onAction={() => navigate('/dashboard')}
+        />
       </div>
     </div>
   );
