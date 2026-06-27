@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "AI Learners",
+  "description": "An elite AI learning platform with course registration, payment verification, and student dashboard.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

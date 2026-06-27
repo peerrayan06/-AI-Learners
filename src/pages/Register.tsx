@@ -310,23 +310,7 @@ export default function Register() {
             >
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
                 <div className="md:col-span-7 flex flex-col gap-8">
-                  <div className="glass-card p-8 rounded-2xl">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-2xl font-bold text-primary tracking-tight">Order Summary</h3>
-                      <span className="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-xs font-mono font-bold tracking-widest uppercase">Premium Plan</span>
-                    </div>
-                    
-                    <div className="flex flex-col gap-4 divide-y divide-white/5">
-                      <div className="flex justify-between py-2 text-base">
-                        <span className="text-on-surface-variant">Registration Fee</span>
-                        <span className="font-bold">100 Rs</span>
-                      </div>
-                      <div className="flex justify-between py-4 border-t border-white/10 items-center">
-                        <span className="text-2xl font-bold">Total Due</span>
-                        <span className="text-3xl font-extrabold text-primary">100 Rs</span>
-                      </div>
-                    </div>
-                  </div>
+
                   
                   <div className="glass-card p-8 rounded-2xl flex flex-col gap-6">
                     <h3 className="text-xl font-bold">Payment Method</h3>
@@ -337,8 +321,18 @@ export default function Register() {
                       </p>
                       
                       <div className="p-4 bg-white rounded-xl">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=pay100rs" alt="QR Code" className="w-[200px] h-[200px]" />
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=zarinashowkat@oksbi%26pn=AI%2520Course%2520Registration%26am=100%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[200px] h-[200px]" />
                       </div>
+
+                      <a 
+                        href="upi://pay?pa=zarinashowkat@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
+                        className="w-full bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-xl p-4 flex items-center justify-center gap-3 transition-all group"
+                      >
+                        <div className="w-8 h-8 flex items-center justify-center bg-white rounded-md p-1">
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" className="w-full h-full object-contain" />
+                        </div>
+                        <span className="font-bold text-primary group-hover:text-white transition-colors">Pay via UPI App</span>
+                      </a>
                       
                       <div className="w-full">
                         <label className="text-xs font-mono text-outline uppercase tracking-widest ml-1 mb-2 block">Transaction ID</label>

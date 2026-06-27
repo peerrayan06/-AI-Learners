@@ -9,12 +9,16 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!user?.user_metadata);
   
   const [profile, setProfile] = useState<any>({
-    full_name: '',
-    short_bio: 'Senior Software Engineer at Technova Labs. Passionate about LLMs and exploring the intersection of human creativity and machine intelligence.',
-    learning_goal: 'Mastering RAG Architecture & Vector DBs'
+    full_name: user?.user_metadata?.full_name || '',
+    email: user?.email || '',
+    phone: '',
+    class_grade: '',
+    sector_interest: '',
+    transaction_id: '',
+    status: 'pending'
   });
 
   useEffect(() => {
@@ -29,13 +33,24 @@ export default function Dashboard() {
           .from('profiles')
           .select('*')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
           
+        if (error) {
+          console.warn('Error loading profile:', error);
+        }
+
         if (data) {
-          setProfile(prev => ({ ...prev, ...data }));
+          setProfile(data);
+        } else {
+          // If profile doesn't exist, use data from auth user
+          setProfile(prev => ({
+            ...prev,
+            full_name: user.user_metadata?.full_name || '',
+            email: user.email || ''
+          }));
         }
       } catch (err) {
-        console.warn('Could not load profile. Ensure profiles table exists.', err);
+        console.error('Unexpected error loading profile:', err);
       } finally {
         setIsLoading(false);
       }
@@ -66,7 +81,7 @@ export default function Dashboard() {
     navigate('/');
   };
 
-  if (isLoading) {
+  if (isLoading && !profile.full_name) {
     return <LoadingSpinner message="Loading Profile..." />;
   }
 
@@ -110,15 +125,15 @@ export default function Dashboard() {
             </div>
             
             <h3 className="text-2xl font-bold">{displayName}</h3>
-            <p className="text-on-surface-variant text-base">{user?.email}</p>
+            <p className="text-on-surface-variant text-base">{profile.email || user?.email || 'Email not set'}</p>
             
             <div className="mt-6 grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Class</span>
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Class / Grade</span>
                 <span className="text-sm font-medium">{profile.class_grade || 'Not set'}</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Phone</span>
+                <span className="text-[10px] font-mono text-outline uppercase tracking-widest">Phone Number</span>
                 <span className="text-sm font-medium">{profile.phone || 'Not set'}</span>
               </div>
               <div className="flex flex-col gap-1 col-span-2">
@@ -139,16 +154,6 @@ export default function Dashboard() {
             <div className="mt-6 flex items-center gap-2 text-on-surface-variant text-[10px] font-mono uppercase tracking-wider">
               <Calendar size={16} />
               Member since {new Date(user?.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-            </div>
-          </div>
-          
-          <div className="mt-8 pt-6 border-t border-white/5">
-            <div className="flex justify-between items-center text-xs font-mono uppercase tracking-wider mb-2">
-              <span className="text-on-surface-variant">Course Progress</span>
-              <span className="text-primary font-bold">68%</span>
-            </div>
-            <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-              <div className="h-full gradient-btn-primary shimmer" style={{ width: '68%' }}></div>
             </div>
           </div>
         </div>
@@ -179,6 +184,18 @@ export default function Dashboard() {
                   )}
                 </div>
               </div>
+              
+              {profile.status !== 'approved' && (
+                <a 
+                  href="upi://pay?pa=zarinashowkat@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
+                  className="w-full mt-2 bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-xl p-3 flex items-center justify-center gap-3 transition-all group"
+                >
+                  <div className="w-6 h-6 flex items-center justify-center bg-white rounded-sm p-0.5">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" className="w-full h-full object-contain" />
+                  </div>
+                  <span className="font-bold text-primary group-hover:text-white transition-colors text-sm">Pay via UPI App</span>
+                </a>
+              )}
             </div>
             
             <h3 className="text-xl font-bold mb-2 mt-4">Quick Actions</h3>
