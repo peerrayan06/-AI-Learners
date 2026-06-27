@@ -323,11 +323,11 @@ export default function Register() {
                       </p>
                       
                       <div className="p-4 bg-white rounded-xl">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=zarinashowkat@oksbi%26pn=AI%2520Course%2520Registration%26am=100%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[200px] h-[200px]" />
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajazahmad3289-1@oksbi%26pn=AI%2520Course%2520Registration%26am=100%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[200px] h-[200px]" />
                       </div>
 
                       <a 
-                        href="upi://pay?pa=zarinashowkat@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
+                        href="upi://pay?pa=ajazahmad3289-1@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
                         className="w-full bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-xl p-4 flex items-center justify-center gap-3 transition-all group"
                       >
                         <div className="w-8 h-8 flex items-center justify-center bg-white rounded-md p-1">

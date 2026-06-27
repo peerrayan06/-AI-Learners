@@ -191,7 +191,7 @@ export default function Dashboard() {
               {profile.status !== 'approved' && (
                 <div className="flex flex-col gap-2 mt-2">
                   <a 
-                    href="upi://pay?pa=zarinashowkat@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
+                    href="upi://pay?pa=ajazahmad3289-1@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
                     onClick={() => setHasClickedUPI(true)}
                     className="w-full bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-xl p-3 flex items-center justify-center gap-3 transition-all group"
                   >
