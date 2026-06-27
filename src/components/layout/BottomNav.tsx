@@ -10,13 +10,13 @@ export default function BottomNav() {
   const [isJoinOpen, setIsJoinOpen] = useState(false);
 
   const communities = [
-    { name: 'AI Project Discussion', link: '#' },
-    { name: 'AI Announcements', link: '#' },
-    { name: 'Web Development', link: '#' },
-    { name: 'AI Academic Studio', link: '#' },
-    { name: 'Image & Video Gen', link: '#' },
-    { name: 'Building AI Agents', link: '#' },
-    { name: 'AI Music & Voice', link: '#' },
+    { name: 'AI Project Discussion', link: 'https://chat.whatsapp.com/KjzKE5msjhm9WJ3YhF1d8N?s=cl&p=a&mlu=0' },
+    { name: 'AI Announcements', link: 'https://chat.whatsapp.com/G94jr5sW3sz6DPiYIf12hT' },
+    { name: 'Web Development', link: 'https://chat.whatsapp.com/H6HzluUD5DaJykAmOaeJGh?s=sh&p=a&mlu=0' },
+    { name: 'AI Academic Studio', link: 'https://chat.whatsapp.com/FnvhXEEUYKy9Dj5PsikEyG?s=sh&p=a&mlu=0' },
+    { name: 'Image & Video Gen', link: 'https://chat.whatsapp.com/HXa72BWJBEI8e3UzZQXtPU?s=cl&p=a&mlu=0' },
+    { name: 'Building AI Agents', link: 'https://chat.whatsapp.com/JtIJBCHsF0sEECFGCPgqJE?s=cl&p=a&mlu=0' },
+    { name: 'AI Music & Voice', link: 'https://chat.whatsapp.com/DZ9dQM8aMVA7cHbuMsWnhV?s=cl&p=a&mlu=0' },
   ];
 
   const isActive = (path: string) => {
@@ -25,51 +25,81 @@ export default function BottomNav() {
 
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg border-t border-white/10 px-4 py-3 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
-        <Link
-          to="/"
-          className={`flex flex-col items-center gap-1 transition-colors ${
-            isActive('/') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
-          }`}
-        >
-          <Home size={20} />
-          <span className="text-[10px] font-bold uppercase tracking-wider">Home</span>
-        </Link>
-
-        {user && (
+      <div className="md:hidden fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <nav className="pointer-events-auto bg-surface-container-low/90 backdrop-blur-xl border border-white/10 px-4 py-2 flex items-center gap-2 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
           <Link
-            to="/dashboard"
-            className={`flex flex-col items-center gap-1 transition-colors ${
-              isActive('/dashboard') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+            to="/"
+            className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
+              isActive('/') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
             }`}
           >
-            <LayoutDashboard size={20} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
+            {isActive('/') && (
+              <motion.div
+                layoutId="active-nav"
+                className="absolute inset-0 bg-primary/10 rounded-full"
+                transition={{ type: 'spring', duration: 0.5 }}
+              />
+            )}
+            <Home size={20} />
+            {isActive('/') && <span className="text-xs font-bold uppercase tracking-tight">Home</span>}
           </Link>
-        )}
 
-        <button
-          onClick={() => setIsJoinOpen(!isJoinOpen)}
-          className={`flex flex-col items-center gap-1 transition-colors ${
-            isJoinOpen ? 'text-emerald-500' : 'text-on-surface-variant hover:text-emerald-500'
-          }`}
-        >
-          <MessageCircle size={20} />
-          <span className="text-[10px] font-bold uppercase tracking-wider">Join</span>
-        </button>
+          {user && (
+            <Link
+              to="/dashboard"
+              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
+                isActive('/dashboard') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              {isActive('/dashboard') && (
+                <motion.div
+                  layoutId="active-nav"
+                  className="absolute inset-0 bg-primary/10 rounded-full"
+                  transition={{ type: 'spring', duration: 0.5 }}
+                />
+              )}
+              <LayoutDashboard size={20} />
+              {isActive('/dashboard') && <span className="text-xs font-bold uppercase tracking-tight">Dash</span>}
+            </Link>
+          )}
 
-        {!user && (
-          <Link
-            to="/register"
-            className={`flex flex-col items-center gap-1 transition-colors ${
-              isActive('/register') && !location.search.includes('mode=login') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+          <button
+            onClick={() => setIsJoinOpen(!isJoinOpen)}
+            className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
+              isJoinOpen ? 'text-emerald-500' : 'text-on-surface-variant hover:text-emerald-500'
             }`}
           >
-            <User size={20} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">Register</span>
-          </Link>
-        )}
-      </nav>
+            {isJoinOpen && (
+              <motion.div
+                layoutId="active-nav"
+                className="absolute inset-0 bg-emerald-500/10 rounded-full"
+                transition={{ type: 'spring', duration: 0.5 }}
+              />
+            )}
+            <MessageCircle size={20} />
+            <span className="text-xs font-bold uppercase tracking-tight">{isJoinOpen ? 'Groups' : 'Join'}</span>
+          </button>
+
+          {!user && (
+            <Link
+              to="/register"
+              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
+                isActive('/register') && !location.search.includes('mode=login') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              {isActive('/register') && !location.search.includes('mode=login') && (
+                <motion.div
+                  layoutId="active-nav"
+                  className="absolute inset-0 bg-primary/10 rounded-full"
+                  transition={{ type: 'spring', duration: 0.5 }}
+                />
+              )}
+              <User size={20} />
+              {isActive('/register') && !location.search.includes('mode=login') && <span className="text-xs font-bold uppercase tracking-tight">Join</span>}
+            </Link>
+          )}
+        </nav>
+      </div>
 
       <AnimatePresence>
         {isJoinOpen && (

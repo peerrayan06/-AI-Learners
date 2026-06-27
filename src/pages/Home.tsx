@@ -3,9 +3,9 @@ import { ArrowRight, Terminal, Box, Sparkles, GraduationCap, Bot, Globe, Palette
 
 export default function Home() {
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 w-full flex-grow">
+    <div className="max-w-[1280px] mx-auto px-4 md:px-12 w-full flex-grow overflow-x-hidden">
       {/* Hero Section */}
-      <section className="min-h-[80vh] flex flex-col md:flex-row items-center justify-between py-12 gap-8">
+      <section className="min-h-[80dvh] flex flex-col md:flex-row items-center justify-between py-12 gap-8">
         <div className="w-full md:w-1/2 flex flex-col gap-6 z-10">
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit">
             <span className="glow-dot"></span>

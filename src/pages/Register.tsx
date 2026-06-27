@@ -100,7 +100,7 @@ export default function Register() {
   };
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col relative min-h-[800px]">
+    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col relative min-h-[800px] overflow-x-hidden">
       
       <div className="relative w-full max-w-4xl mx-auto flex-grow flex">
         <AnimatePresence mode="wait">

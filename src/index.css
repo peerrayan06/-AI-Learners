@@ -70,11 +70,17 @@
 }
 
 @layer base {
-  body {
+  html, body {
     background-color: var(--color-background);
     color: var(--color-on-background);
     overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 

@@ -100,7 +100,7 @@ export default function Dashboard() {
   const displayName = profile.full_name || user?.email?.split('@')[0] || 'Student';
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow">
+    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow overflow-x-hidden">
       <header className="mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
           Welcome back, <span className="text-primary">{displayName}</span>

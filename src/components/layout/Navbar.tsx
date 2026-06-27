@@ -11,13 +11,13 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const communities = [
-    { name: 'AI Project Discussion', link: '#' },
-    { name: 'AI Announcements', link: '#' },
-    { name: 'Web Development Sector', link: '#' },
-    { name: 'AI Academic Studio Sector', link: '#' },
-    { name: 'Image and Video Generation Sector', link: '#' },
-    { name: 'Building AI Agents Sector', link: '#' },
-    { name: 'AI Music & Voice Generation Sector', link: '#' },
+    { name: 'AI Project Discussion', link: 'https://chat.whatsapp.com/KjzKE5msjhm9WJ3YhF1d8N?s=cl&p=a&mlu=0' },
+    { name: 'AI Announcements', link: 'https://chat.whatsapp.com/G94jr5sW3sz6DPiYIf12hT' },
+    { name: 'Web Development Sector', link: 'https://chat.whatsapp.com/H6HzluUD5DaJykAmOaeJGh?s=sh&p=a&mlu=0' },
+    { name: 'AI Academic Studio Sector', link: 'https://chat.whatsapp.com/FnvhXEEUYKy9Dj5PsikEyG?s=sh&p=a&mlu=0' },
+    { name: 'Image and Video Generation Sector', link: 'https://chat.whatsapp.com/HXa72BWJBEI8e3UzZQXtPU?s=cl&p=a&mlu=0' },
+    { name: 'Building AI Agents Sector', link: 'https://chat.whatsapp.com/JtIJBCHsF0sEECFGCPgqJE?s=cl&p=a&mlu=0' },
+    { name: 'AI Music & Voice Generation Sector', link: 'https://chat.whatsapp.com/DZ9dQM8aMVA7cHbuMsWnhV?s=cl&p=a&mlu=0' },
   ];
 
   const isActive = (path: string) => {

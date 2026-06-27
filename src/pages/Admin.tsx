@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, XCircle, User, Mail, Hash, Phone, GraduationCap, Search, AlertCircle, RefreshCcw } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -15,26 +15,43 @@ interface Profile {
 }
 
 export default function Admin() {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
+  const handleAdminLogin = (e: FormEvent) => {
+    e.preventDefault();
+    if (adminEmail === 'peerrayan06@gmail.com' && adminPassword === 'admin@06') {
+      setIsAdminLoggedIn(true);
+      setLoginError('');
+    } else {
+      setLoginError('Invalid admin credentials');
+    }
+  };
+
   useEffect(() => {
-    fetchProfiles();
+    if (isAdminLoggedIn) {
+      fetchProfiles();
 
-    // Set up realtime subscription
-    const subscription = supabase
-      .channel('public:profiles')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-        fetchProfiles();
-      })
-      .subscribe();
+      // Set up realtime subscription
+      const subscription = supabase
+        .channel('public:profiles')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
+          fetchProfiles();
+        })
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(subscription);
-    };
-  }, []);
+      return () => {
+        supabase.removeChannel(subscription);
+      };
+    }
+  }, [isAdminLoggedIn]);
 
   const fetchProfiles = async () => {
     try {
@@ -72,6 +89,75 @@ export default function Admin() {
     profile.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     profile.transaction_id?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (!isAdminLoggedIn) {
+    return (
+      <div className="flex-grow flex items-center justify-center p-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card p-8 rounded-3xl w-full max-w-md border border-white/10 shadow-2xl"
+        >
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+              <AlertCircle size={32} />
+            </div>
+            <h1 className="text-2xl font-bold text-white">Admin Access</h1>
+            <p className="text-on-surface-variant text-sm text-center">Please enter your administrative credentials to continue.</p>
+          </div>
+
+          <form onSubmit={handleAdminLogin} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-mono text-outline uppercase tracking-widest ml-1">Admin Email</label>
+              <div className="flex bg-surface-container-lowest border border-white/10 rounded-xl overflow-hidden focus-within:border-primary transition-all">
+                <span className="p-3 text-on-surface-variant bg-white/5 border-r border-white/10">
+                  <Mail size={18} />
+                </span>
+                <input 
+                  type="email" 
+                  value={adminEmail} 
+                  onChange={e => setAdminEmail(e.target.value)} 
+                  className="flex-1 bg-transparent p-3 text-on-surface outline-none" 
+                  placeholder="admin@example.com"
+                  required 
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-mono text-outline uppercase tracking-widest ml-1">Password</label>
+              <div className="flex bg-surface-container-lowest border border-white/10 rounded-xl overflow-hidden focus-within:border-primary transition-all">
+                <span className="p-3 text-on-surface-variant bg-white/5 border-r border-white/10">
+                  <AlertCircle size={18} />
+                </span>
+                <input 
+                  type="password" 
+                  value={adminPassword} 
+                  onChange={e => setAdminPassword(e.target.value)} 
+                  className="flex-1 bg-transparent p-3 text-on-surface outline-none" 
+                  placeholder="••••••••"
+                  required 
+                />
+              </div>
+            </div>
+
+            {loginError && (
+              <p className="text-error text-xs font-medium bg-error/10 p-3 rounded-lg border border-error/20 flex items-center gap-2">
+                <XCircle size={14} /> {loginError}
+              </p>
+            )}
+
+            <button 
+              type="submit"
+              className="w-full bg-primary hover:bg-primary/90 text-on-primary py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20 mt-4 active:scale-[0.98]"
+            >
+              Login to Admin Panel
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col">
