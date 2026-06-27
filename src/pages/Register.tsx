@@ -65,7 +65,10 @@ export default function Register() {
             .maybeSingle();
 
           if (checkError) {
-            console.error('Check error:', checkError);
+            // If table doesn't exist yet, we just ignore the check
+            if (checkError.code !== '42P01') {
+               throw new Error(`Database error: ${checkError.message}`);
+            }
           }
 
           if (existingUser) {
@@ -94,7 +97,9 @@ export default function Register() {
           .maybeSingle();
 
         if (txCheckError) {
-          console.error('TX check error:', txCheckError);
+          if (txCheckError.code !== '42P01') {
+            throw new Error(`Database error: ${txCheckError.message}`);
+          }
         }
 
         if (existingTx) {
@@ -121,14 +126,13 @@ export default function Register() {
           });
 
           if (profileError) {
-            console.error('Profile creation error:', profileError);
             // Don't throw here if we want the user to at least have an auth account, 
             // but the request is "make sure it's saved", so we should probably alert or handle it.
-            setError('Account created but profile details could not be saved. Please contact support.');
-            // We might still want to proceed to step 3 if the user is signed up, 
-            // but the data won't be in profiles. 
-            // Let's throw for now to be safe and "make sure it's saved".
-            throw new Error(`Profile creation failed: ${profileError.message}`);
+            if (profileError.code !== '42P01') {
+              throw new Error(`Profile creation failed: ${profileError.message}`);
+            } else {
+              throw new Error('Database not configured. Please run the SQL setup script.');
+            }
           }
         }
         
