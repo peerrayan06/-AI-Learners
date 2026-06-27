@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="flex flex-wrap justify-center gap-6">
         <Link to="/" className="text-on-surface-variant text-sm hover:text-secondary transition-colors duration-200 uppercase tracking-widest">Privacy Policy</Link>
         <Link to="/" className="text-on-surface-variant text-sm hover:text-secondary transition-colors duration-200 uppercase tracking-widest">Terms of Service</Link>
-        <Link to="/" className="text-on-surface-variant text-sm hover:text-secondary transition-colors duration-200 uppercase tracking-widest">Contact</Link>
+        <Link to="/admin" className="text-on-surface-variant text-sm hover:text-secondary transition-colors duration-200 uppercase tracking-widest">Admin Panel</Link>
       </div>
       
       <div className="flex gap-4">
