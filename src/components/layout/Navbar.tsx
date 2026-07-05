@@ -32,15 +32,15 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 flex justify-between items-center w-full px-4 md:px-12 py-4 bg-background/80 backdrop-blur-3xl border-b border-white/5">
       <div className="flex items-center gap-8">
-        <Link to="/" className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+        <Link to="/home" className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
           <div className="w-4 h-4 bg-cyber-yellow rounded-full"></div>
           AI Learners
         </Link>
         <div className="hidden md:flex gap-8 items-center">
           <Link
-            to="/"
+            to="/home"
             className={`font-bold transition-colors ${
-              isActive('/') ? 'text-cyber-yellow' : 'text-white hover:text-cyber-yellow'
+              isActive('/home') ? 'text-cyber-yellow' : 'text-white hover:text-cyber-yellow'
             }`}
           >
             Home

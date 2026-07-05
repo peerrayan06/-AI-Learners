@@ -14,9 +14,10 @@ export default function App() {
       <Router>
         <div className="min-h-[100dvh] flex flex-col">
           <Navbar />
-          <main className="flex-grow flex flex-col">
+          <main className="flex-grow flex flex-col pb-24 md:pb-0">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Register />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/register" element={<Register />} />
               <Route path="/admin" element={<Admin />} />

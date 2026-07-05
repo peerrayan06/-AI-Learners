@@ -25,77 +25,51 @@ export default function BottomNav() {
 
   return (
     <>
-      <div className="md:hidden fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-        <nav className="pointer-events-auto bg-surface-container-low/90 backdrop-blur-xl border border-white/10 px-4 py-2 flex items-center gap-2 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      <div 
+        className="md:hidden fixed bottom-0 left-0 right-0 w-full z-[9999] bg-[#0a0a0a] border-t border-white/10 pb-6 pt-2"
+      >
+        <nav className="flex items-center justify-around px-2 w-full">
           <Link
-            to="/"
-            className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
-              isActive('/') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+            to="/home"
+            className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${
+              isActive('/home') ? 'text-cyber-yellow' : 'text-white/50 hover:text-white'
             }`}
           >
-            {isActive('/') && (
-              <motion.div
-                layoutId="active-nav"
-                className="absolute inset-0 bg-primary/10 rounded-full"
-                transition={{ type: 'spring', duration: 0.5 }}
-              />
-            )}
-            <Home size={20} />
-            {isActive('/') && <span className="text-xs font-bold uppercase tracking-tight">Home</span>}
+            <Home size={20} className={isActive('/home') ? 'drop-shadow-[0_0_8px_rgba(253,224,71,0.5)]' : ''} />
+            <span className="text-[10px] font-medium tracking-wide">Home</span>
           </Link>
 
           {user && (
             <Link
               to="/dashboard"
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
-                isActive('/dashboard') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${
+                isActive('/dashboard') ? 'text-cyber-yellow' : 'text-white/50 hover:text-white'
               }`}
             >
-              {isActive('/dashboard') && (
-                <motion.div
-                  layoutId="active-nav"
-                  className="absolute inset-0 bg-primary/10 rounded-full"
-                  transition={{ type: 'spring', duration: 0.5 }}
-                />
-              )}
-              <LayoutDashboard size={20} />
-              {isActive('/dashboard') && <span className="text-xs font-bold uppercase tracking-tight">Dash</span>}
+              <LayoutDashboard size={20} className={isActive('/dashboard') ? 'drop-shadow-[0_0_8px_rgba(253,224,71,0.5)]' : ''} />
+              <span className="text-[10px] font-medium tracking-wide">Dash</span>
             </Link>
           )}
 
           <button
             onClick={() => setIsJoinOpen(!isJoinOpen)}
-            className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
-              isJoinOpen ? 'text-emerald-500' : 'text-on-surface-variant hover:text-emerald-500'
+            className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${
+              isJoinOpen ? 'text-emerald-500' : 'text-white/50 hover:text-white'
             }`}
           >
-            {isJoinOpen && (
-              <motion.div
-                layoutId="active-nav"
-                className="absolute inset-0 bg-emerald-500/10 rounded-full"
-                transition={{ type: 'spring', duration: 0.5 }}
-              />
-            )}
-            <MessageCircle size={20} />
-            <span className="text-xs font-bold uppercase tracking-tight">{isJoinOpen ? 'Groups' : 'Join'}</span>
+            <MessageCircle size={20} className={isJoinOpen ? 'drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]' : ''} />
+            <span className="text-[10px] font-medium tracking-wide">Join</span>
           </button>
 
           {!user && (
             <Link
               to="/register"
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 ${
-                isActive('/register') && !location.search.includes('mode=login') ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${
+                isActive('/register') && !location.search.includes('mode=login') ? 'text-cyber-yellow' : 'text-white/50 hover:text-white'
               }`}
             >
-              {isActive('/register') && !location.search.includes('mode=login') && (
-                <motion.div
-                  layoutId="active-nav"
-                  className="absolute inset-0 bg-primary/10 rounded-full"
-                  transition={{ type: 'spring', duration: 0.5 }}
-                />
-              )}
-              <User size={20} />
-              {isActive('/register') && !location.search.includes('mode=login') && <span className="text-xs font-bold uppercase tracking-tight">Register</span>}
+              <User size={20} className={isActive('/register') && !location.search.includes('mode=login') ? 'drop-shadow-[0_0_8px_rgba(253,224,71,0.5)]' : ''} />
+              <span className="text-[10px] font-medium tracking-wide">Register</span>
             </Link>
           )}
         </nav>
