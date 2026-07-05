@@ -12,7 +12,7 @@ export default function Register() {
   const [isLogin, setIsLogin] = useState(searchParams.get('mode') === 'login');
   
   const [step, setStep] = useState(1);
-  const [interest, setInterest] = useState('ai_basics');
+  const [interest, setInterest] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
