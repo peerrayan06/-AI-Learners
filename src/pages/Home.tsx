@@ -1,183 +1,197 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Terminal, Box, Sparkles, GraduationCap, Bot, Globe, Palette, Music } from 'lucide-react';
+import { ArrowRight, Terminal, Box, Sparkles, GraduationCap, Bot, Globe, Palette, Music, CheckCircle2 } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 w-full flex-grow">
-      {/* Hero Section */}
-      <section className="min-h-[80dvh] flex flex-col md:flex-row items-center justify-between py-12 gap-8">
-        <div className="w-full md:w-1/2 flex flex-col gap-6 z-10">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit">
-            <span className="glow-dot"></span>
-            <span className="text-xs text-primary font-mono uppercase tracking-widest">The Future is Here</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-            Learn AI by Building <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Real Projects</span>
-          </h1>
-          <p className="text-lg text-on-surface-variant max-w-lg leading-relaxed">
-            Master AI tools, AI agents, website development, image generation, and future-ready skills with practical learning. Join our elite community of builders.
-          </p>
-          <div className="flex flex-wrap gap-4 mt-4">
-            <Link to="/register" className="gradient-btn-primary px-8 py-4 rounded-xl font-bold text-on-primary-container flex items-center gap-2">
-              Register Now
-              <ArrowRight size={20} />
-            </Link>
-          </div>
-        </div>
-        
-        <div className="w-full md:w-1/2 relative flex justify-center items-center h-[400px] md:h-[600px]">
-          {/* Decorative blurred orbs for atmosphere */}
-          <div className="absolute w-64 h-64 bg-primary/20 rounded-full blur-[100px] -top-10 -right-10 pointer-events-none"></div>
-          <div className="absolute w-64 h-64 bg-secondary/10 rounded-full blur-[100px] bottom-0 left-0 pointer-events-none"></div>
+    <div className="w-full flex-grow flex flex-col bg-background relative overflow-hidden">
+      {/* Liquid Hero Section */}
+      <section className="relative w-full bg-cyber-yellow rounded-b-[40px] md:rounded-bl-[80px] md:rounded-br-[160px] pt-12 pb-24 md:pb-40 px-4 md:px-12 flex flex-col items-center justify-center z-10 transition-all duration-700 ease-in-out">
+        <div className="w-full max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
           
-          <div className="w-full h-full relative z-0 glass-card rounded-[2rem] overflow-hidden flex items-center justify-center p-8 group">
-            <img 
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqvO5AMqwwuecVN_yAJtUPMBbryRyYmaRueXKsPMePNl2FiI_CLtSkD1CuqfsN45hc63l2OnP7a-Zq5jqBwIulbT8OB0EMfVcMavBT0RflBYj14FG6fiQQLvj2XyoINfWAP3_yKDscraP9Jh7ffvyWSouXmjp73G5U9r5m003tmqMY07oAJqcrh84ktHsjPxHALf3wMDNfPByJOl7KureKlAmwHApS74l5JptnnT9Fjslm9DyHKPI2NllhXff6m455pBlcVbm8pRub" 
-              alt="Futuristic AI Brain" 
-            />
-            {/* Floating Data Points Overlay */}
-            <div className="absolute top-1/4 left-1/4 animate-bounce p-4 glass-card rounded-xl shadow-2xl">
-              <Bot className="text-secondary" size={32} />
+          <div className="w-full md:w-[60%] flex flex-col gap-8 z-10">
+            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 border border-black/10 w-fit">
+              <span className="w-2 h-2 rounded-full bg-black animate-pulse"></span>
+              <span className="text-[10px] text-black font-mono uppercase tracking-widest font-bold">The Future is Here</span>
             </div>
-            <div className="absolute bottom-1/4 right-1/4 animate-pulse p-4 glass-card rounded-xl shadow-2xl" style={{ animationDelay: '1s' }}>
-              <Terminal className="text-primary" size={32} />
+            
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tighter text-black">
+              Learn AI by <br />
+              Building <br className="hidden md:block"/>
+              Real Projects.
+            </h1>
+            
+            <p className="text-lg md:text-xl text-black/70 max-w-lg leading-relaxed font-medium">
+              Master AI tools, autonomous agents, website development, and image generation. Join our elite community of builders.
+            </p>
+            
+            <div className="flex flex-wrap gap-4 mt-2">
+              <Link to="/register" className="bg-black text-white px-10 py-5 rounded-full font-bold flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-black/20 group">
+                Start Building Now
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+          
+          <div className="w-full md:w-[40%] relative flex justify-center items-center h-[400px] md:h-[500px]">
+            {/* Glassmorphic Data Card in Hero */}
+            <div className="glass-card !bg-white/30 !border-white/40 !backdrop-blur-3xl rounded-[32px] p-8 w-full max-w-sm flex flex-col gap-6 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] animate-float">
+              <div className="flex justify-between items-start">
+                <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-cyber-yellow">
+                  <Bot size={24} />
+                </div>
+                <div className="bg-black text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                  Live System
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="text-[10px] font-mono text-black/60 uppercase tracking-widest">Active Cohort</div>
+                <div className="text-4xl font-black text-black">100+</div>
+                <div className="text-sm font-medium text-black/80">Projects Deployed Daily</div>
+              </div>
+
+              <div className="w-full h-2 bg-black/10 rounded-full overflow-hidden mt-2">
+                <div className="w-[85%] h-full bg-black rounded-full relative">
+                   <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 shimmer"></div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3 mt-2 border-t border-black/10 pt-4">
+                <CheckCircle2 size={18} className="text-black" />
+                <span className="text-sm font-bold text-black">Registration Open</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      {/* The Void: Features Section */}
+      <section className="relative w-full bg-background pt-32 pb-24 px-4 md:px-12 -mt-20 z-0">
+        <div className="max-w-[1280px] mx-auto space-y-16">
+          <div className="text-left space-y-4 max-w-2xl">
+            <span className="text-[10px] font-mono text-cyber-yellow tracking-widest uppercase bg-cyber-yellow/10 px-3 py-1 rounded-full">Methodology</span>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Why AI Learners?</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="glass-card p-10 rounded-[40px] flex flex-col gap-6 group hover:!bg-white/10">
+              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-cyber-yellow group-hover:scale-110 transition-transform duration-500 border border-white/10">
+                <Terminal size={32} />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-white">Practical Learning</h3>
+                <p className="text-on-surface-variant text-sm leading-relaxed">Don't just watch videos. Code, prompt, and deploy AI solutions in our cloud-integrated lab environment from day one.</p>
+              </div>
+            </div>
+            
+            <div className="glass-card p-10 rounded-[40px] flex flex-col gap-6 group hover:!bg-white/10">
+              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-cyber-yellow group-hover:scale-110 transition-transform duration-500 border border-white/10">
+                <Box size={32} />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-white">Project-Based</h3>
+                <p className="text-on-surface-variant text-sm leading-relaxed">Build a professional portfolio of real-world AI applications, from custom chatbots to automated content pipelines.</p>
+              </div>
+            </div>
+            
+            <div className="glass-card p-10 rounded-[40px] flex flex-col gap-6 group hover:!bg-white/10">
+              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-cyber-yellow group-hover:scale-110 transition-transform duration-500 border border-white/10">
+                <Sparkles size={32} />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-white">Future Skills</h3>
+                <p className="text-on-surface-variant text-sm leading-relaxed">Stay ahead of the curve. We constantly update our curriculum to cover the latest breakthroughs in LLMs and generative tech.</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section: Feature Cards */}
-      <section className="py-16 space-y-12">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-mono text-secondary tracking-widest uppercase">Methodology</span>
-          <h2 className="text-3xl font-bold">Why AI Learners?</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Practical Learning */}
-          <div className="glass-card p-8 rounded-xl flex flex-col gap-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-              <Terminal size={28} />
+      {/* Curriculum Bento Grid */}
+      <section className="relative w-full bg-background py-24 px-4 md:px-12">
+        <div className="max-w-[1280px] mx-auto space-y-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-4">
+              <span className="text-[10px] font-mono text-cyber-yellow tracking-widest uppercase bg-cyber-yellow/10 px-3 py-1 rounded-full">Curriculum</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Explore Domains</h2>
             </div>
-            <h3 className="text-xl font-bold">Practical Learning</h3>
-            <p className="text-on-surface-variant text-base leading-relaxed">Don't just watch videos. Code, prompt, and deploy AI solutions in our cloud-integrated lab environment from day one.</p>
+            <p className="text-on-surface-variant text-sm leading-relaxed md:max-w-md">Our curriculum transforms you from beginner to AI specialist through structured, hands-on paths.</p>
           </div>
           
-          {/* Project-Based Education */}
-          <div className="glass-card p-8 rounded-xl flex flex-col gap-4">
-            <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary">
-              <Box size={28} />
-            </div>
-            <h3 className="text-xl font-bold">Project-Based Education</h3>
-            <p className="text-on-surface-variant text-base leading-relaxed">Build a professional portfolio of real-world AI applications, from custom chatbots to automated content pipelines.</p>
-          </div>
-          
-          {/* Future Skills */}
-          <div className="glass-card p-8 rounded-xl flex flex-col gap-4">
-            <div className="w-12 h-12 bg-tertiary/10 rounded-lg flex items-center justify-center text-tertiary">
-              <Sparkles size={28} />
-            </div>
-            <h3 className="text-xl font-bold">Future Skills</h3>
-            <p className="text-on-surface-variant text-base leading-relaxed">Stay ahead of the curve. We constantly update our curriculum to cover the latest breakthroughs in LLMs and generative tech.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Learning Topics Grid: Bento Layout */}
-      <section className="py-16 space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
-            <span className="text-xs font-mono text-primary tracking-widest uppercase">Curriculum</span>
-            <h2 className="text-3xl font-bold">Explore Our Domains</h2>
-          </div>
-          <p className="text-on-surface-variant text-base leading-relaxed md:max-w-md">Our curriculum is designed to transform you from a beginner to an AI specialist through structured, hands-on paths.</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-          {/* AI Basics */}
-          <div className="md:col-span-3 glass-card p-8 rounded-xl relative group overflow-hidden">
-            <div className="relative z-10">
-              <GraduationCap className="text-primary mb-4" size={40} />
-              <h4 className="text-2xl font-bold">AI Basics</h4>
-              <p className="text-on-surface-variant mt-2 max-w-xs leading-relaxed">Foundational concepts of neural networks, machine learning, and the history of modern AI.</p>
-            </div>
-            <div className="absolute -bottom-8 -right-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
-              <GraduationCap size={160} />
-            </div>
-          </div>
-          
-          {/* AI Agents */}
-          <div className="md:col-span-3 glass-card p-8 rounded-xl relative group overflow-hidden">
-            <div className="relative z-10">
-              <Bot className="text-secondary mb-4" size={40} />
-              <h4 className="text-2xl font-bold">AI Agents</h4>
-              <p className="text-on-surface-variant mt-2 max-w-xs leading-relaxed">Build autonomous agents using AutoGPT, BabyAGI, and LangChain frameworks.</p>
-            </div>
-            <div className="absolute -bottom-8 -right-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
-              <Bot size={160} />
-            </div>
-          </div>
-          
-          {/* Website Development */}
-          <div className="md:col-span-2 glass-card p-8 rounded-xl text-center group">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Globe className="text-primary" size={32} />
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+            <div className="md:col-span-3 glass-card p-10 rounded-[40px] relative group overflow-hidden min-h-[300px] flex flex-col justify-end">
+              <div className="absolute top-10 right-10 opacity-20 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-110">
+                <GraduationCap size={120} className="text-white" />
               </div>
-              <h4 className="text-xl font-bold">Website Dev</h4>
-              <p className="text-xs font-mono text-on-surface-variant">Modern full-stack with AI-powered code assistants.</p>
-            </div>
-          </div>
-          
-          {/* Image Generation */}
-          <div className="md:col-span-2 glass-card p-8 rounded-xl text-center group">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
-                <Palette className="text-secondary" size={32} />
+              <div className="relative z-10 space-y-3">
+                <h4 className="text-3xl font-black text-white tracking-tight">AI Basics</h4>
+                <p className="text-on-surface-variant text-sm max-w-xs leading-relaxed">Foundational concepts of neural networks, machine learning, and the history of modern AI.</p>
               </div>
-              <h4 className="text-xl font-bold">Image Gen</h4>
-              <p className="text-xs font-mono text-on-surface-variant">Master Midjourney, Stable Diffusion, and DALL-E 3.</p>
             </div>
-          </div>
-          
-          {/* Music Generation */}
-          <div className="md:col-span-2 glass-card p-8 rounded-xl text-center group">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-tertiary/20 transition-colors">
-                <Music className="text-tertiary" size={32} />
+            
+            <div className="md:col-span-3 glass-card p-10 rounded-[40px] relative group overflow-hidden min-h-[300px] flex flex-col justify-end">
+              <div className="absolute top-10 right-10 opacity-20 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-110">
+                <Bot size={120} className="text-cyber-yellow" />
               </div>
-              <h4 className="text-xl font-bold">Music Gen</h4>
-              <p className="text-xs font-mono text-on-surface-variant">Create professional audio tracks with Suno and Udio AI.</p>
+              <div className="relative z-10 space-y-3">
+                <h4 className="text-3xl font-black text-white tracking-tight">AI Agents</h4>
+                <p className="text-on-surface-variant text-sm max-w-xs leading-relaxed">Build autonomous agents using AutoGPT, BabyAGI, and modern LLM orchestration frameworks.</p>
+              </div>
+            </div>
+            
+            <div className="md:col-span-2 glass-card p-10 rounded-[40px] text-center group flex flex-col justify-center items-center gap-6 min-h-[250px]">
+              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyber-yellow/20 transition-colors border border-white/10">
+                <Globe className="text-white group-hover:text-cyber-yellow transition-colors" size={40} />
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-2xl font-bold text-white">Website Dev</h4>
+                <p className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest">Full-stack & AI</p>
+              </div>
+            </div>
+            
+            <div className="md:col-span-2 glass-card p-10 rounded-[40px] text-center group flex flex-col justify-center items-center gap-6 min-h-[250px]">
+              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyber-yellow/20 transition-colors border border-white/10">
+                <Palette className="text-white group-hover:text-cyber-yellow transition-colors" size={40} />
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-2xl font-bold text-white">Image Gen</h4>
+                <p className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest">Midjourney & SD</p>
+              </div>
+            </div>
+            
+            <div className="md:col-span-2 glass-card p-10 rounded-[40px] text-center group flex flex-col justify-center items-center gap-6 min-h-[250px]">
+              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyber-yellow/20 transition-colors border border-white/10">
+                <Music className="text-white group-hover:text-cyber-yellow transition-colors" size={40} />
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-2xl font-bold text-white">Music Gen</h4>
+                <p className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest">Suno & Udio AI</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 pb-24">
-        <div className="glass-card p-8 md:p-16 rounded-3xl overflow-hidden relative border-none bg-gradient-to-br from-primary-fixed-dim/10 via-surface-container to-surface-container-low">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(77,142,255,0.1),transparent_70%)] pointer-events-none"></div>
+      <section className="relative w-full py-32 px-4 md:px-12 flex justify-center">
+        <div className="max-w-[1000px] w-full glass-card p-12 md:p-20 rounded-[60px] text-center flex flex-col items-center gap-8 relative overflow-hidden border-white/20">
+          <div className="absolute top-0 left-0 w-full h-full bg-cyber-yellow/5 pointer-events-none"></div>
           
-          <div className="relative z-10 flex flex-col items-center text-center gap-6">
-            <h2 className="text-4xl md:text-5xl font-extrabold max-w-2xl tracking-tight">
-              Ready to join AI Learners?
-            </h2>
-            <p className="text-lg text-on-surface-variant max-w-xl leading-relaxed">
-              Unlock over 100+ projects, exclusive community events, and the most advanced AI curriculum available online.
-            </p>
-            <div className="mt-4 flex flex-col sm:flex-row items-center gap-6">
-              <Link to="/register" className="gradient-btn-primary px-10 py-5 rounded-2xl font-bold text-lg text-on-primary-container shadow-xl hover:scale-105 transition-transform block">
-                Register Now
-              </Link>
-            </div>
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter relative z-10 leading-tight">
+            Ready to <br/> <span className="text-cyber-yellow">Innovate?</span>
+          </h2>
+          <p className="text-sm md:text-base text-on-surface-variant max-w-md leading-relaxed relative z-10">
+            Unlock over 100+ projects, exclusive community events, and the most advanced AI curriculum available.
+          </p>
+          <div className="mt-4 relative z-10">
+            <Link to="/register" className="bg-cyber-yellow text-black px-12 py-5 rounded-full font-black text-lg flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(253,224,71,0.3)]">
+              Join Now
+            </Link>
           </div>
-          
-          {/* Atmospheric background element */}
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
         </div>
       </section>
+      
     </div>
   );
 }

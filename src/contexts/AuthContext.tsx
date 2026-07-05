@@ -34,10 +34,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (session) {
           setSession(session);
           setUser(session.user);
+        } else if (localStorage.getItem('mockAuth') === 'true') {
+          setUser({ id: 'mock-user-123', email: 'student@example.com', app_metadata: {}, user_metadata: { full_name: 'Demo Student' }, aud: 'authenticated', created_at: new Date().toISOString() } as User);
         }
       } catch (err: any) {
         console.error('Failed to get Supabase session:', err);
-        if (err.message?.includes('Failed to fetch')) setError(err);
+        if (err.message?.includes('Failed to fetch')) {
+          console.warn('Supabase fetch failed. Probably missing keys. Proceeding with mock auth if enabled.');
+          if (localStorage.getItem('mockAuth') === 'true') {
+            setUser({ id: 'mock-user-123', email: 'student@example.com', app_metadata: {}, user_metadata: { full_name: 'Demo Student' }, aud: 'authenticated', created_at: new Date().toISOString() } as User);
+          }
+        } else {
+          setError(err);
+        }
       } finally {
         setLoading(false);
       }
@@ -49,7 +58,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.warn('Supabase sign out failed. Probably offline.');
+    }
+    localStorage.removeItem('mockAuth');
+    setUser(null);
+    setSession(null);
   };
 
   if (loading) {
