@@ -227,7 +227,6 @@ export default function Register() {
                             <option value="" disabled className="text-white/50">Select Gender</option>
                             <option value="Male" className="text-white bg-slate-900">Male</option>
                             <option value="Female" className="text-white bg-slate-900">Female</option>
-                            <option value="Other" className="text-white bg-slate-900">Other</option>
                           </select>
                         </div>
                       </div>

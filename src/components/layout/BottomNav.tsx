@@ -83,44 +83,44 @@ export default function BottomNav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsJoinOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000] md:hidden"
             />
             <motion.div
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed bottom-0 left-0 right-0 z-[70] bg-surface-container-low border-t border-white/10 rounded-t-3xl p-5 md:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)] max-h-[80vh] overflow-y-auto"
+              className="fixed bottom-0 left-0 right-0 z-[10001] bg-[#111111] border-t border-white/10 rounded-t-3xl p-4 md:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.8)] max-h-[85vh] overflow-y-auto pb-8"
             >
-              <div className="flex justify-between items-center mb-4 sticky top-0 bg-surface-container-low z-10 pb-2 border-b border-white/5">
+              <div className="flex justify-between items-center mb-3 sticky top-0 bg-[#111111] z-10 pb-2 border-b border-white/5">
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-bold text-white">Join Community</h3>
-                  <p className="text-on-surface-variant text-[10px]">Select a sector to join our WhatsApp groups</p>
+                  <h3 className="text-base font-bold text-white">Join Community</h3>
+                  <p className="text-white/60 text-[10px]">Select a sector to join our WhatsApp groups</p>
                 </div>
                 <button
                   onClick={() => setIsJoinOpen(false)}
-                  className="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-all"
+                  className="p-1.5 hover:bg-white/10 bg-white/5 rounded-full text-white/70 transition-all"
                 >
-                  <X size={18} />
+                  <X size={16} />
                 </button>
               </div>
 
-              <div className="flex flex-col gap-2 pb-6">
+              <div className="flex flex-col gap-1.5 pb-2">
                 {communities.map((community, index) => (
                   <a
                     key={index}
                     href={community.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-primary/10 hover:border-primary/30 transition-all group"
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all group"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                        <MessageCircle size={16} />
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                        <MessageCircle size={14} />
                       </div>
-                      <span className="font-bold text-on-surface text-sm">{community.name}</span>
+                      <span className="font-bold text-white text-xs">{community.name}</span>
                     </div>
-                    <div className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-widest bg-emerald-500/10 px-2 py-1 rounded">
+                    <div className="text-[8px] font-mono text-emerald-500 font-bold uppercase tracking-widest bg-emerald-500/10 px-2 py-1 rounded">
                       Join
                     </div>
                   </a>
