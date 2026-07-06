@@ -41,11 +41,11 @@ export default function Register() {
   useEffect(() => {
     if (step === 3) {
       const timer = setTimeout(() => {
-        window.location.href = '/dashboard';
+        navigate('/dashboard');
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [step]);
+  }, [step, navigate]);
 
   const handleAuth = async (e: FormEvent) => {
     e.preventDefault();
@@ -156,7 +156,7 @@ export default function Register() {
         console.warn('Auth bypassed due to missing backend or network error.');
         localStorage.setItem('mockAuth', 'true');
         if (isLogin) {
-          window.location.href = '/dashboard';
+          navigate('/dashboard');
         } else {
           setStep(3);
         }
