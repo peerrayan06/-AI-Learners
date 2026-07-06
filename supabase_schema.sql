@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID REFERENCES auth.users(id) PRIMARY KEY,
     full_name TEXT NOT NULL,
     class_grade TEXT,
+    gender TEXT,
     phone TEXT,
     sector_interest TEXT,
     transaction_id TEXT,

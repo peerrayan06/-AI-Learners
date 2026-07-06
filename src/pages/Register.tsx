@@ -38,6 +38,15 @@ export default function Register() {
     }
   }, [user, navigate, step]);
 
+  useEffect(() => {
+    if (step === 3) {
+      const timer = setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [step]);
+
   const handleAuth = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
