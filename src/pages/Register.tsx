@@ -97,27 +97,6 @@ export default function Register() {
           return;
         }
 
-        if (!transactionId.trim()) {
-          throw new Error('Please enter a valid Transaction ID');
-        }
-
-        // Check if transaction ID already exists
-        const { data: existingTx, error: txCheckError } = await supabase
-          .from('profiles')
-          .select('transaction_id')
-          .eq('transaction_id', transactionId)
-          .maybeSingle();
-
-        if (txCheckError) {
-          if (txCheckError.code !== '42P01') {
-            throw new Error(`Database error: ${txCheckError.message}`);
-          }
-        }
-
-        if (existingTx) {
-          throw new Error('This Transaction ID has already been used. Please enter your own transaction details.');
-        }
-
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
           password,
@@ -133,7 +112,7 @@ export default function Register() {
             gender: gender,
             phone: phone,
             sector_interest: interest,
-            transaction_id: transactionId,
+            transaction_id: 'PAID',
             status: 'pending',
             email: email
           });
@@ -371,11 +350,6 @@ export default function Register() {
                         </div>
                         <span className="font-bold text-sm md:text-base text-cyber-yellow group-hover:text-white transition-colors">Pay via UPI App</span>
                       </a>
-                      
-                      <div className="w-full mt-2">
-                        <label className="text-[10px] font-mono text-white/50 uppercase tracking-widest ml-1 mb-1.5 md:mb-2 block">Transaction ID</label>
-                        <input type="text" value={transactionId} onChange={e => setTransactionId(e.target.value)} placeholder="e.g. UPI-1234567890" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-4 text-white focus:border-cyber-yellow focus:ring-1 focus:ring-cyber-yellow/20 outline-none transition-all placeholder:text-white/20" required />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -438,7 +412,7 @@ export default function Register() {
           onClose={() => window.location.href = '/dashboard'}
           title="Registration Success! 🎉"
           message="Your application has been received. Our team will verify your transaction (usually takes 12-24 hours). Welcome to the next generation of AI architects!"
-          transactionId={transactionId}
+          transactionId={undefined}
           status="pending"
           actionText="Go to Dashboard"
           onAction={() => window.location.href = '/dashboard'}
