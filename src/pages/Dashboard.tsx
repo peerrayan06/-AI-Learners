@@ -12,7 +12,6 @@ export default function Dashboard() {
   
   const [isLoading, setIsLoading] = useState(!user?.user_metadata);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [hasClickedUPI, setHasClickedUPI] = useState(false);
   
   const [profile, setProfile] = useState<any>({
     full_name: user?.user_metadata?.full_name || '',
@@ -187,31 +186,6 @@ export default function Dashboard() {
                   )}
                 </div>
               </div>
-              
-              {profile.status !== 'approved' && (
-                <div className="flex flex-col gap-2 mt-2">
-                  <a 
-                    href="upi://pay?pa=ajazahmad3289-1@okaxis&pn=AI%20Course%20Registration&am=50&cu=INR&tn=Registration%20Fee" 
-                    onClick={() => setHasClickedUPI(true)}
-                    className="w-full bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-xl p-3 flex items-center justify-center gap-3 transition-all group"
-                  >
-                    <div className="w-6 h-6 flex items-center justify-center bg-white rounded-sm p-0.5">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" className="w-full h-full object-contain" />
-                    </div>
-                    <span className="font-bold text-primary group-hover:text-white transition-colors text-sm">Pay via UPI App</span>
-                  </a>
-                  
-                  {hasClickedUPI && (
-                    <button 
-                      onClick={() => setShowSuccess(true)}
-                      className="w-full bg-secondary/10 hover:bg-secondary/20 border border-secondary/30 rounded-xl p-3 flex items-center justify-center gap-3 transition-all text-secondary font-bold text-sm"
-                    >
-                      <CheckCircle2 size={16} />
-                      Confirm Payment Sent
-                    </button>
-                  )}
-                </div>
-              )}
             </div>
             
             <h3 className="text-xl font-bold mb-2 mt-4">Quick Actions</h3>
