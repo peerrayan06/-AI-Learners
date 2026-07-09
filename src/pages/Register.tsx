@@ -25,10 +25,12 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+  const [hasClickedUPI, setHasClickedUPI] = useState(false);
 
   const handleCopyUpiId = () => {
     navigator.clipboard.writeText('ajazahmad3289-1@okaxis');
     setCopied(true);
+    setHasClickedUPI(true);
     setTimeout(() => setCopied(false), 2000);
   };
   
@@ -355,6 +357,7 @@ export default function Register() {
 
                       <a 
                         href="upi://pay?pa=ajazahmad3289-1@okaxis&pn=AI%20Course%20Registration&am=50&cu=INR&tn=Registration%20Fee" 
+                        onClick={() => setHasClickedUPI(true)}
                         className="w-full bg-cyber-yellow/10 hover:bg-cyber-yellow/20 border border-cyber-yellow/30 rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-center gap-3 transition-all group"
                       >
                         <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center bg-white rounded-md p-1">
@@ -399,16 +402,18 @@ export default function Register() {
                   )}
 
                   <div className="flex flex-col gap-3 md:gap-4 mt-0 md:mt-2">
-                    <button onClick={handleAuth} disabled={loading} className="bg-cyber-yellow text-black w-full py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold flex justify-center shadow-xl shadow-cyber-yellow/10 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                      {loading ? (
-                         <span className="flex items-center gap-2">
-                           <div className="w-4 h-4 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
-                           Processing...
-                         </span>
-                      ) : (
-                        "I have completed payment"
-                      )}
-                    </button>
+                    {hasClickedUPI && (
+                      <button onClick={handleAuth} disabled={loading} className="bg-cyber-yellow text-black w-full py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold flex justify-center shadow-xl shadow-cyber-yellow/10 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        {loading ? (
+                           <span className="flex items-center gap-2">
+                             <div className="w-4 h-4 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
+                             Processing...
+                           </span>
+                        ) : (
+                          "I have completed payment"
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

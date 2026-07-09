@@ -103,7 +103,7 @@ export default function Navbar() {
         </div>
       </div>
       <div className="flex gap-4 items-center">
-        {user ? (
+        {user && location.pathname !== '/' && location.pathname !== '/register' ? (
           <>
             <div className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/10 text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-cyber-yellow animate-pulse"></span>
@@ -114,13 +114,13 @@ export default function Navbar() {
               <span className="hidden md:block">Logout</span>
             </button>
           </>
-        ) : (
+        ) : !user ? (
           <>
             <Link to="/register" className="hidden md:block bg-cyber-yellow text-black px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 active:scale-95 transition-transform duration-200">
               Register
             </Link>
           </>
-        )}
+        ) : null}
       </div>
     </nav>
   );

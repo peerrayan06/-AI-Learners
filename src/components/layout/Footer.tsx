@@ -6,7 +6,11 @@ export default function Footer() {
     <footer className="w-full px-4 md:px-12 pt-8 pb-24 md:pb-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-surface-container-lowest border-t border-white/10 mt-auto">
       <div className="flex flex-col items-center md:items-start gap-2">
         <span className="text-2xl font-extrabold text-primary">AI Learners</span>
-        <span className="text-xs text-on-surface-variant tracking-wider">© 2024 AI Learners. All rights reserved.</span>
+        <span className="text-xs text-on-surface-variant tracking-wider text-center md:text-left">
+          Sponsored by New Green Land Senior Secondary School Sumbal
+          <br />
+          © 2024 AI Learners. All rights reserved.
+        </span>
       </div>
       
       <div className="flex flex-wrap justify-center gap-6">
