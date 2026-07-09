@@ -1,6 +1,6 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GraduationCap, Bot, Code, Image as ImageIcon, Music, ArrowRight, ShieldCheck, CheckCircle2, Building, Bitcoin, AlertCircle } from 'lucide-react';
+import { GraduationCap, Bot, Code, Image as ImageIcon, Music, ArrowRight, ShieldCheck, CheckCircle2, Building, Bitcoin, AlertCircle, Copy, Check } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
@@ -24,6 +24,13 @@ export default function Register() {
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyUpiId = () => {
+    navigator.clipboard.writeText('ajazahmad3289-1@okaxis');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -338,11 +345,24 @@ export default function Register() {
                       </p>
                       
                       <div className="p-3 md:p-4 bg-white rounded-[20px] md:rounded-[24px] shadow-2xl shadow-cyber-yellow/20">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajazahmad3289-1@oksbi%26pn=AI%2520Course%2520Registration%26am=50%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[160px] h-[160px] md:w-[200px] md:h-[200px]" />
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajazahmad3289-1@okaxis%26pn=AI%2520Course%2520Registration%26am=50%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[160px] h-[160px] md:w-[200px] md:h-[200px]" />
+                      </div>
+                      <div className="flex items-center gap-2 bg-cyber-yellow/10 px-4 py-2 rounded-lg border border-cyber-yellow/20">
+                        <span className="font-mono text-xs md:text-sm text-cyber-yellow font-bold">
+                          ajazahmad3289-1@okaxis
+                        </span>
+                        <button
+                          type="button"
+                          onClick={handleCopyUpiId}
+                          className="ml-2 text-cyber-yellow/80 hover:text-cyber-yellow transition-colors focus:outline-none"
+                          title="Copy UPI ID"
+                        >
+                          {copied ? <Check size={16} /> : <Copy size={16} />}
+                        </button>
                       </div>
 
                       <a 
-                        href="upi://pay?pa=ajazahmad3289-1@oksbi&pn=AI%20Course%20Registration&am=50&cu=INR&tn=Registration%20Fee" 
+                        href="upi://pay?pa=ajazahmad3289-1@okaxis&pn=AI%20Course%20Registration&am=50&cu=INR&tn=Registration%20Fee" 
                         className="w-full bg-cyber-yellow/10 hover:bg-cyber-yellow/20 border border-cyber-yellow/30 rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-center gap-3 transition-all group"
                       >
                         <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center bg-white rounded-md p-1">
