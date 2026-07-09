@@ -25,12 +25,10 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
-  const [hasClickedUPI, setHasClickedUPI] = useState(false);
 
   const handleCopyUpiId = () => {
     navigator.clipboard.writeText('ajazahmad3289-1@okaxis');
     setCopied(true);
-    setHasClickedUPI(true);
     setTimeout(() => setCopied(false), 2000);
   };
   
@@ -98,37 +96,41 @@ export default function Register() {
             }
           }
 
-          const { data, error: signUpError } = await supabase.auth.signUp({
-            email,
-            password,
-          });
-
-          if (signUpError) throw signUpError;
-
-          if (data.user) {
-            const { error: profileError } = await supabase.from('profiles').insert({
-              id: data.user.id,
-              full_name: fullName,
-              class_grade: classGrade,
-              gender: gender,
-              phone: phone,
-              sector_interest: interest,
-              transaction_id: `PAID-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-              status: 'pending',
-              email: email
-            });
-
-            if (profileError && profileError.code !== '42P01') {
-              throw new Error(`Profile creation failed: ${profileError.message}`);
-            }
-          }
-
           setStep(2);
           setLoading(false);
           return;
         }
 
         // If step is 2, user just confirms they have paid
+        if (!transactionId.trim()) {
+          throw new Error('Please enter your UPI transaction ID to complete registration.');
+        }
+
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (signUpError) throw signUpError;
+
+        if (data.user) {
+          const { error: profileError } = await supabase.from('profiles').insert({
+            id: data.user.id,
+            full_name: fullName,
+            class_grade: classGrade,
+            gender: gender,
+            phone: phone,
+            sector_interest: interest,
+            transaction_id: transactionId,
+            status: 'pending',
+            email: email
+          });
+
+          if (profileError && profileError.code !== '42P01') {
+            throw new Error(`Profile creation failed: ${profileError.message}`);
+          }
+        }
+        
         setStep(3);
       }
     } catch (err: any) {
@@ -357,7 +359,6 @@ export default function Register() {
 
                       <a 
                         href="upi://pay?pa=ajazahmad3289-1@okaxis&pn=AI%20Course%20Registration&am=50&cu=INR&tn=Registration%20Fee" 
-                        onClick={() => setHasClickedUPI(true)}
                         className="w-full bg-cyber-yellow/10 hover:bg-cyber-yellow/20 border border-cyber-yellow/30 rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-center gap-3 transition-all group"
                       >
                         <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center bg-white rounded-md p-1">
@@ -365,6 +366,11 @@ export default function Register() {
                         </div>
                         <span className="font-bold text-sm md:text-base text-cyber-yellow group-hover:text-white transition-colors">Pay via UPI App</span>
                       </a>
+                      
+                      <div className="w-full mt-2">
+                        <label className="text-[10px] font-mono text-white/50 uppercase tracking-widest ml-1 mb-1.5 md:mb-2 block">Transaction ID *</label>
+                        <input type="text" value={transactionId} onChange={e => setTransactionId(e.target.value)} placeholder="e.g. UPI-1234567890" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-4 text-white focus:border-cyber-yellow focus:ring-1 focus:ring-cyber-yellow/20 outline-none transition-all placeholder:text-white/20" required />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -402,18 +408,16 @@ export default function Register() {
                   )}
 
                   <div className="flex flex-col gap-3 md:gap-4 mt-0 md:mt-2">
-                    {hasClickedUPI && (
-                      <button onClick={handleAuth} disabled={loading} className="bg-cyber-yellow text-black w-full py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold flex justify-center shadow-xl shadow-cyber-yellow/10 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                        {loading ? (
-                           <span className="flex items-center gap-2">
-                             <div className="w-4 h-4 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
-                             Processing...
-                           </span>
-                        ) : (
-                          "I have completed payment"
-                        )}
-                      </button>
-                    )}
+                    <button onClick={handleAuth} disabled={loading} className="bg-cyber-yellow text-black w-full py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold flex justify-center shadow-xl shadow-cyber-yellow/10 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                      {loading ? (
+                         <span className="flex items-center gap-2">
+                           <div className="w-4 h-4 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
+                           Processing...
+                         </span>
+                      ) : (
+                        "I have completed payment"
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -426,7 +430,7 @@ export default function Register() {
           onClose={() => window.location.href = '/dashboard'}
           title="Registration Success! 🎉"
           message="Your application has been received. Our team will verify your transaction (usually takes 12-24 hours). Welcome to the next generation of AI architects!"
-          transactionId={undefined}
+          transactionId={transactionId || undefined}
           status="pending"
           actionText="Go to Dashboard"
           onAction={() => window.location.href = '/dashboard'}
