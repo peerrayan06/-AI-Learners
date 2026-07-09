@@ -112,7 +112,7 @@ export default function Register() {
             gender: gender,
             phone: phone,
             sector_interest: interest,
-            transaction_id: 'PAID',
+            transaction_id: `PAID-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
             status: 'pending',
             email: email
           });
@@ -338,11 +338,11 @@ export default function Register() {
                       </p>
                       
                       <div className="p-3 md:p-4 bg-white rounded-[20px] md:rounded-[24px] shadow-2xl shadow-cyber-yellow/20">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajazahmad3289-1@oksbi%26pn=AI%2520Course%2520Registration%26am=100%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[160px] h-[160px] md:w-[200px] md:h-[200px]" />
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ajazahmad3289-1@oksbi%26pn=AI%2520Course%2520Registration%26am=50%26cu=INR%26tn=Registration%2520Fee" alt="QR Code" className="w-[160px] h-[160px] md:w-[200px] md:h-[200px]" />
                       </div>
 
                       <a 
-                        href="upi://pay?pa=ajazahmad3289-1@oksbi&pn=AI%20Course%20Registration&am=100&cu=INR&tn=Registration%20Fee" 
+                        href="upi://pay?pa=ajazahmad3289-1@oksbi&pn=AI%20Course%20Registration&am=50&cu=INR&tn=Registration%20Fee" 
                         className="w-full bg-cyber-yellow/10 hover:bg-cyber-yellow/20 border border-cyber-yellow/30 rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-center gap-3 transition-all group"
                       >
                         <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center bg-white rounded-md p-1">
