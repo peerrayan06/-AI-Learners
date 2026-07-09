@@ -73,7 +73,7 @@ export default function Register() {
           // Phone number validation
           const cleanPhone = phone.replace(/\s+/g, '');
           if (cleanPhone.length !== 10 || !/^\d+$/.test(cleanPhone)) {
-            throw new Error('Please enter a valid mobile number (exactly 10 digits)');
+             throw new Error('Please enter a valid mobile number (exactly 10 digits)');
           }
 
           // Check if user already exists with this email or phone
@@ -83,11 +83,8 @@ export default function Register() {
             .or(`email.eq.${email},phone.eq.${phone}`)
             .maybeSingle();
 
-          if (checkError) {
-            // If table doesn't exist yet, we just ignore the check
-            if (checkError.code !== '42P01') {
-               throw new Error(`Database error: ${checkError.message}`);
-            }
+          if (checkError && checkError.code !== '42P01') {
+             throw new Error(`Database error: ${checkError.message}`);
           }
 
           if (existingUser) {
@@ -99,42 +96,37 @@ export default function Register() {
             }
           }
 
+          const { data, error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+          });
+
+          if (signUpError) throw signUpError;
+
+          if (data.user) {
+            const { error: profileError } = await supabase.from('profiles').insert({
+              id: data.user.id,
+              full_name: fullName,
+              class_grade: classGrade,
+              gender: gender,
+              phone: phone,
+              sector_interest: interest,
+              transaction_id: `PAID-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+              status: 'pending',
+              email: email
+            });
+
+            if (profileError && profileError.code !== '42P01') {
+              throw new Error(`Profile creation failed: ${profileError.message}`);
+            }
+          }
+
           setStep(2);
           setLoading(false);
           return;
         }
 
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
-        if (signUpError) throw signUpError;
-
-        if (data.user) {
-          const { error: profileError } = await supabase.from('profiles').insert({
-            id: data.user.id,
-            full_name: fullName,
-            class_grade: classGrade,
-            gender: gender,
-            phone: phone,
-            sector_interest: interest,
-            transaction_id: `PAID-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-            status: 'pending',
-            email: email
-          });
-
-          if (profileError) {
-            // Don't throw here if we want the user to at least have an auth account, 
-            // but the request is "make sure it's saved", so we should probably alert or handle it.
-            if (profileError.code !== '42P01') {
-              throw new Error(`Profile creation failed: ${profileError.message}`);
-            } else {
-              throw new Error('Database not configured. Please run the SQL setup script.');
-            }
-          }
-        }
-        
+        // If step is 2, user just confirms they have paid
         setStep(3);
       }
     } catch (err: any) {
@@ -414,11 +406,8 @@ export default function Register() {
                            Processing...
                          </span>
                       ) : (
-                        "Confirm Payment & Register"
+                        "I have completed payment"
                       )}
-                    </button>
-                    <button onClick={() => setStep(1)} className="w-full py-3 md:py-4 rounded-xl md:rounded-2xl font-medium text-white/50 hover:text-white hover:bg-white/5 transition-all text-xs md:text-sm">
-                      Back to Profile Details
                     </button>
                   </div>
                 </div>
