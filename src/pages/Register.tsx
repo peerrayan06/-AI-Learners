@@ -4,6 +4,8 @@ import { GraduationCap, Bot, Code, Image as ImageIcon, Music, ArrowRight, Shield
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import { useUI } from '../contexts/UIContext';
+import { Skeleton } from '../components/ui/Skeleton';
 
 import { SuccessModal } from '../components/ui/SuccessModal';
 
@@ -13,7 +15,6 @@ export default function Register() {
   
   const [step, setStep] = useState(1);
   const [interest, setInterest] = useState('');
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -32,7 +33,8 @@ export default function Register() {
     setTimeout(() => setCopied(false), 2000);
   };
   
-  const { user } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
+  const { setUILocked } = useUI();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,10 +42,22 @@ export default function Register() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (step === 2 && !isLogin) {
+      setUILocked(true);
+    } else {
+      setUILocked(false);
+    }
+    
+    // Cleanup on unmount
+    return () => setUILocked(false);
+  }, [step, isLogin, setUILocked]);
+
+  useEffect(() => {
+    if (isAuthLoading) return;
     if (user && step === 1) {
       navigate('/dashboard');
     }
-  }, [user, navigate, step]);
+  }, [user, navigate, step, isAuthLoading]);
 
   useEffect(() => {
     if (step === 3) {
@@ -77,21 +91,23 @@ export default function Register() {
           }
 
           // Check if user already exists with this email or phone
-          const { data: existingUser, error: checkError } = await supabase
+          const { data: existingUsers, error: checkError } = await supabase
             .from('profiles')
             .select('email, phone')
-            .or(`email.eq.${email},phone.eq.${phone}`)
-            .maybeSingle();
+            .or(`email.eq.${email},phone.eq.${phone}`);
 
           if (checkError && checkError.code !== '42P01') {
              throw new Error(`Database error: ${checkError.message}`);
           }
 
-          if (existingUser) {
-            if (existingUser.email === email) {
+          if (existingUsers && existingUsers.length > 0) {
+            const emailExists = existingUsers.some(u => u.email === email);
+            const phoneExists = existingUsers.some(u => u.phone === phone);
+            
+            if (emailExists) {
               throw new Error('This email is already registered. Please login or use a different email.');
             }
-            if (existingUser.phone === phone) {
+            if (phoneExists) {
               throw new Error('This phone number is already registered. Please enter your own details.');
             }
           }
@@ -149,6 +165,53 @@ export default function Register() {
       setLoading(false);
     }
   };
+
+  if (isAuthLoading) {
+    return (
+      <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col relative min-h-[800px]">
+        <div className="relative w-full max-w-4xl mx-auto flex-grow flex">
+          <div className="w-full flex flex-col gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+              <div className="md:col-span-7 glass-card p-6 md:p-8 rounded-[24px] md:rounded-[32px] flex flex-col gap-6 border border-white/10">
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-8 md:h-10 w-2/3 max-w-xs" />
+                  <Skeleton className="h-5 md:h-6 w-full max-w-sm" />
+                </div>
+                
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <Skeleton className="h-3 w-24 mb-2" />
+                    <Skeleton className="h-12 w-full rounded-xl" />
+                  </div>
+                  <div>
+                    <Skeleton className="h-3 w-24 mb-2" />
+                    <Skeleton className="h-12 w-full rounded-xl" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Skeleton className="h-3 w-24 mb-2" />
+                      <Skeleton className="h-12 w-full rounded-xl" />
+                    </div>
+                    <div>
+                      <Skeleton className="h-3 w-24 mb-2" />
+                      <Skeleton className="h-12 w-full rounded-xl" />
+                    </div>
+                  </div>
+                </div>
+
+                <Skeleton className="h-14 w-full rounded-2xl mt-4" />
+              </div>
+              
+              <div className="md:col-span-5 flex flex-col gap-4 md:gap-6">
+                <Skeleton className="h-40 w-full rounded-[24px]" />
+                <Skeleton className="h-40 w-full rounded-[24px]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow flex flex-col relative min-h-[800px]">

@@ -3,15 +3,19 @@ import { Calendar, LogOut, Clock, XCircle, CheckCircle2, ArrowRight } from 'luci
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Skeleton } from '../components/ui/Skeleton';
 import { SuccessModal } from '../components/ui/SuccessModal';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
 
 export default function Dashboard() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isLoading: isAuthLoading } = useAuth();
   const navigate = useNavigate();
+  const { width, height } = useWindowSize();
   
   const [isLoading, setIsLoading] = useState(!user?.user_metadata);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   
   const [profile, setProfile] = useState<any>({
     full_name: user?.user_metadata?.full_name || '',
@@ -24,6 +28,8 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
+    if (isAuthLoading) return;
+    
     if (!user) {
       navigate('/register?mode=login');
       return;
@@ -78,19 +84,95 @@ export default function Dashboard() {
     };
   }, [user, navigate]);
 
+  useEffect(() => {
+    if (profile.status === 'approved') {
+      const hasSeenConfetti = sessionStorage.getItem(`confetti_shown_${user?.id}`);
+      if (!hasSeenConfetti) {
+        setShowConfetti(true);
+        sessionStorage.setItem(`confetti_shown_${user?.id}`, 'true');
+        setTimeout(() => setShowConfetti(false), 5000);
+      }
+    }
+  }, [profile.status, user?.id]);
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
 
-  if (isLoading && !profile.full_name) {
-    return <LoadingSpinner message="Loading Profile..." />;
+  if ((isLoading && !profile.full_name) || isAuthLoading) {
+    return (
+      <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow">
+        <header className="mb-12">
+          <Skeleton className="h-12 md:h-14 w-3/4 max-w-lg mb-4" />
+          <Skeleton className="h-6 w-full max-w-2xl" />
+          <Skeleton className="h-6 w-5/6 max-w-2xl mt-2" />
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div className="md:col-span-6 glass-card p-8 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-start mb-6">
+                <Skeleton className="w-16 h-16 rounded-full" />
+                <Skeleton className="w-32 h-6 rounded-full" />
+              </div>
+              
+              <Skeleton className="h-8 w-48 mb-2" />
+              <Skeleton className="h-5 w-64 mb-6" />
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="h-5 w-32" />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="h-5 w-32" />
+                </div>
+                <div className="flex flex-col gap-2 col-span-2">
+                  <Skeleton className="h-3 w-32" />
+                  <Skeleton className="h-5 w-48" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="md:col-span-6 glass-card p-8 rounded-2xl flex flex-col gap-4">
+            <Skeleton className="h-7 w-48 mb-2" />
+            <div className="p-4 rounded-xl border border-white/5 flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-3 w-32" />
+                <Skeleton className="h-5 w-full max-w-xs" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-3 w-32" />
+                <Skeleton className="h-5 w-40" />
+              </div>
+            </div>
+            
+            <Skeleton className="h-7 w-40 mt-4 mb-2" />
+            <Skeleton className="h-16 w-full rounded-xl mt-auto" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const displayName = profile.full_name || user?.email?.split('@')[0] || 'Student';
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow">
+    <>
+      {showConfetti && (
+        <Confetti
+          width={width}
+          height={height}
+          recycle={false}
+          numberOfPieces={500}
+          gravity={0.15}
+          style={{ position: 'fixed', top: 0, left: 0, zIndex: 100 }}
+        />
+      )}
+      <div className="max-w-[1280px] mx-auto px-4 md:px-12 py-12 w-full flex-grow">
       <header className="mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
           Welcome back, <span className="text-primary">{displayName}</span>
@@ -212,5 +294,6 @@ export default function Dashboard() {
         />
       </div>
     </div>
+    </>
   );
 }

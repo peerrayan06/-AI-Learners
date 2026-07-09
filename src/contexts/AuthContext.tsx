@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { XCircle } from 'lucide-react';
 
 interface AuthContextType {
@@ -9,9 +8,10 @@ interface AuthContextType {
   user: User | null;
   signOut: () => Promise<void>;
   error: Error | null;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ session: null, user: null, signOut: async () => {}, error: null });
+const AuthContext = createContext<AuthContextType>({ session: null, user: null, signOut: async () => {}, error: null, isLoading: true });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -68,10 +68,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession(null);
   };
 
-  if (loading) {
-    return <LoadingSpinner message="Initializing Auth..." fullScreen={true} />;
-  }
-
   if (error && error.message.includes('Failed to fetch')) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-surface p-6">
@@ -96,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, signOut, error }}>
+    <AuthContext.Provider value={{ session, user, signOut, error, isLoading: loading }}>
       {children}
     </AuthContext.Provider>
   );

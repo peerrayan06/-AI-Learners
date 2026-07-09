@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, ArrowRight, X, Clock, FileText } from 'lucide-react';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -23,6 +25,8 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
   actionText,
   onAction,
 }) => {
+  const { width, height } = useWindowSize();
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -32,11 +36,19 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
         >
+          <Confetti
+            width={width}
+            height={height}
+            recycle={false}
+            numberOfPieces={400}
+            gravity={0.15}
+            style={{ zIndex: 101 }}
+          />
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center gap-6 max-w-md w-full text-center border-primary/40 shadow-[0_0_50px_rgba(77,142,255,0.2)] relative overflow-hidden"
+            className="glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center gap-6 max-w-md w-full text-center border-primary/40 shadow-[0_0_50px_rgba(77,142,255,0.2)] relative overflow-hidden z-[102]"
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary via-primary to-tertiary"></div>
             
